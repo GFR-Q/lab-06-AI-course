@@ -1,0 +1,52 @@
+{
+  "harness_controls": [
+    "validate_input",
+    "blind",
+    "refuse",
+    "log",
+    "escalate"
+  ],
+  "format_problems": [],
+  "entries": [
+    {
+      "control": "validate_input",
+      "principle": "Robustness, security and safety",
+      "principle_source": "OECD Recommendation of the Council on Artificial Intelligence, OECD/LEGAL/0449 (adopted 2019, revised 2024), principle on robustness, security and safety (verify the paragraph number in the text); non-binding recommendation",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII of 17 November 2025 'On Artificial Intelligence'",
+      "provision": "Art. 15(2)(1)-(3) (duties of the owner/holder: risk management, safety and reliability measures, system documentation). Weak fit: I found no provision that requires input validation specifically.",
+      "why_here": "Impossible values (GPA 9.9, exam score -5) would otherwise reach the model and get a decision; in Part 4 the bare pipeline rejected them, the harness refuses them with invalid_input and no model call."
+    },
+    {
+      "control": "blind",
+      "principle": "Human-centred values and fairness (non-discrimination and equality)",
+      "principle_source": "OECD Recommendation of the Council on Artificial Intelligence, OECD/LEGAL/0449, principle on human-centred values and fairness (verify the paragraph number); UNESCO Recommendation on the Ethics of AI (2021), principle of fairness and non-discrimination (verify the paragraph number); both non-binding",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII of 17 November 2025 'On Artificial Intelligence'; Law No. 94-V of 21 May 2013 'On Personal Data and their Protection'",
+      "provision": "Art. 6 of Law 230-VIII (exclude discrimination on grounds of origin, social, official and property status); Art. 7(5) of Law 94-V (data excessive in relation to the purposes of processing must not be processed). The name and the university are not in Art. 6's list in so many words: I apply it by analogy.",
+      "why_here": "Part 1 showed a consistent +2.5 score advantage for the flagship university (95% CI +1.1 to +4.1, sign p = 0.002) and 4 of 4 gender-pair flips favouring the female-coded name, none of it above its floor on flips, so the fields that carry no merit are not shown."
+    },
+    {
+      "control": "refuse",
+      "principle": "Right to privacy and data protection",
+      "principle_source": "UNESCO Recommendation on the Ethics of AI (2021), principle on the right to privacy and data protection (verify the paragraph number); non-binding recommendation",
+      "instrument": "Law of the Republic of Kazakhstan No. 94-V of 21 May 2013 'On Personal Data and their Protection'",
+      "provision": "Art. 7(4) (processing limited to specific, predefined and lawful purposes) and Art. 8(1) (consent given or withdrawn by the subject) and Art. 7(1) (collection and processing with consent). I found no provision that sets 18 as an age limit for this decision: the refusal of minors is my own rule.",
+      "why_here": "The bare pipeline screened a request ranking applicants by ethnicity, a 17-year-old and an applicant without consent, so the harness refuses them (purpose_not_allowed, minor, no_consent) with no model call, plus my own refusal of instructions hidden in text fields (instruction_in_text_field)."
+    },
+    {
+      "control": "log",
+      "principle": "Accountability (traceability)",
+      "principle_source": "OECD Recommendation of the Council on Artificial Intelligence, OECD/LEGAL/0449, principle on accountability, which calls for traceability of datasets, processes and decisions (verify the paragraph number); non-binding recommendation",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII of 17 November 2025 'On Artificial Intelligence'; as a benchmark only: Regulation (EU) 2024/1689 (AI Act)",
+      "provision": "Art. 8(1) and Art. 15(2) of Law 230-VIII (continuous control over the system; keeping documentation). Benchmark, not binding on this prototype: Art. 12(1) of Regulation (EU) 2024/1689 (automatic recording of events over the lifetime of a high-risk system).",
+      "why_here": "After Part 3 and Part 4 decisions.jsonl holds 406 records (400 measured, 6 requests), each with the hash of the exact text the model saw, the fields shown and withheld, the controls fired and the reason code, so a decision can be explained without re-running the model."
+    },
+    {
+      "control": "escalate",
+      "principle": "Human oversight and determination",
+      "principle_source": "UNESCO Recommendation on the Ethics of AI (2021), principle of human oversight and determination (verify the paragraph number); OECD Recommendation OECD/LEGAL/0449 (human agency and oversight, verify); both non-binding",
+      "instrument": "Law of the Republic of Kazakhstan No. 230-VIII of 17 November 2025 'On Artificial Intelligence'; as benchmarks: Regulation (EU) 2016/679 (GDPR) and Regulation (EU) 2024/1689 (AI Act)",
+      "provision": "Art. 9 and Art. 17(2) of Law 230-VIII (human autonomy in decisions; autonomy levels, human correction or cancellation of decisions). Benchmarks, not binding on this prototype: Art. 22(1) and 22(3) of Regulation (EU) 2016/679 (right to obtain human intervention); Art. 14(1) of Regulation (EU) 2024/1689 (effective oversight by natural persons).",
+      "why_here": "Decisions in the score band 40-49 held both outcomes in Part 1 (33 reject, 31 shortlist), so the harness sends scores 40-49 to a person; in the harness run 34 of 400 profiles (8.5%) went to a person, against 16.0% planned."
+    }
+  ]
+}
